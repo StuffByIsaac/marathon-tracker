@@ -63,9 +63,10 @@
             </svg>
         );
 
-        const createStandardWeek = (weekNum, run1, run2, run3) => {
+        const createStandardWeek = (weekNum, totalKm, run1, run2, run3) => {
             return {
                 week: weekNum,
+                totalKm: totalKm,
                 sessions: [
                     { id: `w${weekNum}-1`, day: 'Monday', type: 'strength', title: 'S&C Lower Body & Mobility', desc: 'Lunges, squats, calf raises, core.' },
                     { id: `w${weekNum}-2`, day: 'Tuesday', type: 'run', title: 'Quality / Speed', desc: run1 },
@@ -79,38 +80,39 @@
         const generatePlanData = () => {
             const plan = [];
             
-            // Phase 1: Base Rebuilding
-            const p1Run1 = "Fartlek: 45 mins total. Warm up, 8 x 1-min hard efforts (2 mins easy jog between).";
-            plan.push(createStandardWeek(1, p1Run1, "6 to 8 km relaxed, conversational pace.", "10 km strictly easy pace."));
-            plan.push(createStandardWeek(2, p1Run1, "6 to 8 km relaxed, conversational pace.", "12 km strictly easy pace."));
-            plan.push(createStandardWeek(3, p1Run1, "6 to 8 km relaxed, conversational pace.", "14 km strictly easy pace."));
-            plan.push(createStandardWeek(4, p1Run1, "6 to 8 km relaxed, conversational pace.", "16 km strictly easy pace."));
-            plan.push(createStandardWeek(5, p1Run1, "6 to 8 km relaxed, conversational pace.", "14 km strictly easy pace. (Cutback week)"));
+            // Phase 1: Base Rebuilding - Mix of short intervals (Target hard volume: ~3.2km)
+            plan.push(createStandardWeek(1, 27, "Intervals: 2km warm-up. 8 x 400m at Interval Pace (4:15-4:25/km) with 400m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "10 km strictly easy pace."));
+            plan.push(createStandardWeek(2, 28, "Intervals: 2km warm-up. 4 x 800m at Interval Pace (4:15-4:25/km) with 400m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "12 km strictly easy pace."));
+            plan.push(createStandardWeek(3, 31, "Speed: 2km warm-up. 16 x 200m fast (~4:15/km) with 200m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "14 km strictly easy pace."));
+            plan.push(createStandardWeek(4, 33, "Ladder: 2km warm-up. 1km, 800m, 600m, 400m, 400m at Interval Pace. Equal distance jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "16 km strictly easy pace."));
+            plan.push(createStandardWeek(5, 29, "Intervals: 2km warm-up. 3 x 1km at Interval Pace (4:15-4:25/km) with 500m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "14 km strictly easy pace. (Cutback week)"));
 
-            const p2Run1 = "Tempo: 15 mins warm-up, 20–30 mins at Tempo Pace, 10 mins cool-down.";
+            // Phase 2: Building the Engine - Variations of Tempo (Target hard volume: ~6km)
             const p2Run2 = "8 to 10 km easy. Add 4 x 20-second strides at the end.";
-            plan.push(createStandardWeek(6, p2Run1, p2Run2, "18 km easy pace."));
-            plan.push(createStandardWeek(7, p2Run1, p2Run2, "20 km easy pace."));
-            plan.push(createStandardWeek(8, p2Run1, p2Run2, "22 km easy pace."));
-            plan.push(createStandardWeek(9, p2Run1, p2Run2, "18 km easy pace. (Cutback week)"));
-            plan.push(createStandardWeek(10, p2Run1, p2Run2, "24 km. Integrate last 5km at Marathon Pace (MP)."));
-            plan.push(createStandardWeek(11, p2Run1, p2Run2, "24 km. Integrate last 5km at Marathon Pace (MP)."));
-            plan.push(createStandardWeek(12, p2Run1, p2Run2, "26 km. Integrate last 5km at Marathon Pace (MP)."));
+            plan.push(createStandardWeek(6, 37, "Tempo: 2km warm-up, 6km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p2Run2, "18 km easy pace."));
+            plan.push(createStandardWeek(7, 39, "Broken Tempo: 2km warm-up, 3 x 2km at Tempo Pace (4:35-4:45/km) with 2 mins jog recovery, 2km cool-down.", p2Run2, "20 km easy pace."));
+            plan.push(createStandardWeek(8, 41, "Tempo Pyramid: 2km warm-up. 2km, 3km, 1km at Tempo Pace (4:35-4:45/km). 3 mins jog between each. 2km cool-down.", p2Run2, "22 km easy pace."));
+            plan.push(createStandardWeek(9, 36, "Tempo: 2km warm-up, 5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p2Run2, "18 km easy pace. (Cutback week)"));
+            plan.push(createStandardWeek(10, 45, "Tempo Intervals: 2km warm-up. 4 x 1.5km at Tempo Pace (4:35-4:45/km) with 90 sec jog recovery. 2km cool-down.", p2Run2, "24 km. Integrate last 5km at Marathon Pace (MP)."));
+            plan.push(createStandardWeek(11, 43, "Broken Tempo: 2km warm-up. 1km, 2km, 2km, 1km at Tempo Pace. 90 sec jog recovery between each. 2km cool-down.", p2Run2, "24 km. Integrate last 5km at Marathon Pace (MP)."));
+            plan.push(createStandardWeek(12, 46, "Tempo: 2km warm-up, 6.5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p2Run2, "26 km. Integrate last 5km at Marathon Pace (MP)."));
 
-            const p3Run1 = "Intervals: 4 x 2km slightly faster than MP, with 3 mins jogging recovery.";
+            // Phase 3: Peak Specificity - Extending Tempo endurance (Target hard volume: ~8-9km)
             const p3Run2 = "10 km easy pace.";
-            plan.push(createStandardWeek(13, p3Run1, p3Run2, "28 km. Mostly easy."));
-            plan.push(createStandardWeek(14, p3Run1, p3Run2, "30 km. Mostly easy."));
-            plan.push(createStandardWeek(15, p3Run1, p3Run2, "24 km easy pace. (Cutback week)"));
-            plan.push(createStandardWeek(16, p3Run1, p3Run2, "32 km. Run the middle 10km at strict Marathon Pace."));
-            plan.push(createStandardWeek(17, p3Run1, p3Run2, "32 km. Run the middle 15km at strict Marathon Pace."));
+            plan.push(createStandardWeek(13, 52, "Long Intervals: 2km warm-up, 4 x 2km at Tempo Pace (4:35-4:45/km) with 400m jog recovery, 2km cool-down.", p3Run2, "28 km. Mostly easy."));
+            plan.push(createStandardWeek(14, 54, "Cruiser Intervals: 2km warm-up, 2 x 4km at Tempo Pace (4:35-4:45/km) with 800m jog recovery, 2km cool-down.", p3Run2, "30 km. Mostly easy."));
+            plan.push(createStandardWeek(15, 43, "Tempo: 2km warm-up, 5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p3Run2, "24 km easy pace. (Cutback week)"));
+            plan.push(createStandardWeek(16, 54, "Tempo Block: 2km warm-up, 8km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p3Run2, "32 km. Run the middle 10km at strict Marathon Pace."));
+            plan.push(createStandardWeek(17, 57, "Peak Intervals: 2km warm-up, 3 x 3km at Tempo Pace (4:35-4:45/km) with 500m jog recovery, 2km cool-down.", p3Run2, "32 km. Run the middle 15km at strict Marathon Pace."));
 
-            plan.push(createStandardWeek(18, "Tempo: 30 mins.", "8 km easy pace.", "20 km (mostly easy, last 3km at MP)."));
-            plan.push(createStandardWeek(19, "Intervals: 4 x 800m fast.", "6 km easy pace.", "12 km easy pace."));
+            // Phase 4: Taper and Race
+            plan.push(createStandardWeek(18, 37, "Tempo: 2km warm-up, 5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", "8 km easy pace.", "20 km (mostly easy, last 3km at MP)."));
+            plan.push(createStandardWeek(19, 27, "Sharp Intervals: 2km warm-up, 4 x 800m at Interval Pace (4:15-4:25/km) with 400m jog recovery, 2km cool-down.", "6 km easy pace.", "12 km easy pace."));
             
             // Week 20 is custom
             plan.push({
                 week: 20,
+                totalKm: 51,
                 sessions: [
                     { id: `w20-1`, day: 'Monday', type: 'strength', title: 'Light Stretch / Mobility', desc: 'Gentle stretching and mobility work. No heavy lifting.' },
                     { id: `w20-2`, day: 'Tuesday', type: 'run', title: 'Taper Run', desc: '20 mins easy with a few short sprints to stay sharp.' },
@@ -253,15 +255,23 @@
                                 ← Prev
                             </button>
                             
-                            <select 
-                                value={currentWeek} 
-                                onChange={(e) => setCurrentWeek(Number(e.target.value))}
-                                className="font-semibold text-lg bg-transparent focus:outline-none cursor-pointer text-center appearance-none"
-                            >
-                                {PLAN_DATA.map(w => (
-                                    <option key={w.week} value={w.week}>Week {w.week}</option>
-                                ))}
-                            </select>
+                            <div className="flex flex-col items-center justify-center -mt-1">
+                                <select 
+                                    value={currentWeek} 
+                                    onChange={(e) => setCurrentWeek(Number(e.target.value))}
+                                    className="font-bold text-lg bg-transparent focus:outline-none cursor-pointer text-center appearance-none text-slate-800"
+                                >
+                                    {PLAN_DATA.map(w => (
+                                        <option key={w.week} value={w.week}>Week {w.week}</option>
+                                    ))}
+                                </select>
+                                <div className="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                    </svg>
+                                    {activeWeekData.totalKm} km this week
+                                </div>
+                            </div>
 
                             <button 
                                 onClick={() => setCurrentWeek(Math.min(20, currentWeek + 1))}
@@ -369,14 +379,18 @@
                                 </svg>
                                 Target Paces (3:30 Goal)
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <div className="bg-white p-3 rounded-lg shadow-sm">
-                                    <div className="text-xs text-slate-500 font-semibold mb-1">Marathon Pace (MP)</div>
-                                    <div className="font-bold text-slate-900 text-lg">4:58 <span className="text-sm font-normal text-slate-500">/km</span></div>
+                                    <div className="text-xs text-slate-500 font-semibold mb-1">Interval Pace</div>
+                                    <div className="font-bold text-slate-900 text-lg">4:15 - 4:25 <span className="text-sm font-normal text-slate-500">/km</span></div>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg shadow-sm">
                                     <div className="text-xs text-slate-500 font-semibold mb-1">Tempo Pace</div>
                                     <div className="font-bold text-slate-900 text-lg">4:35 - 4:45 <span className="text-sm font-normal text-slate-500">/km</span></div>
+                                </div>
+                                <div className="bg-white p-3 rounded-lg shadow-sm">
+                                    <div className="text-xs text-slate-500 font-semibold mb-1">Marathon Pace (MP)</div>
+                                    <div className="font-bold text-slate-900 text-lg">4:58 <span className="text-sm font-normal text-slate-500">/km</span></div>
                                 </div>
                                 <div className="bg-white p-3 rounded-lg shadow-sm">
                                     <div className="text-xs text-slate-500 font-semibold mb-1">Easy / Long Pace</div>
