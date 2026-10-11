@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tokyo 2027 Training Tracker</title>
+    <title>Tokyo 2027 Training Tracker • 20 Week Plan</title>
     
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -14,7 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
@@ -63,65 +63,288 @@
             </svg>
         );
 
-        const createStandardWeek = (weekNum, totalKm, run1, run2, run3) => {
-            return {
-                week: weekNum,
-                totalKm: totalKm,
-                sessions: [
-                    { id: `w${weekNum}-1`, day: 'Monday', type: 'strength', title: 'S&C Lower Body & Mobility', desc: 'Lunges, squats, calf raises, core.' },
-                    { id: `w${weekNum}-2`, day: 'Tuesday', type: 'run', title: 'Quality / Speed', desc: run1 },
-                    { id: `w${weekNum}-3`, day: 'Wednesday', type: 'strength', title: 'S&C Upper Body & Mobility', desc: 'Upper body, core, and deep stretching/yoga.' },
-                    { id: `w${weekNum}-4`, day: 'Thursday', type: 'run', title: 'Aerobic Maintenance', desc: run2 },
-                    { id: `w${weekNum}-5`, day: 'Saturday', type: 'run', title: 'Long Run', desc: run3 }
-                ]
-            };
-        };
+        const LightBulb = ({ className = "w-5 h-5" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+        );
 
+        // 20-Week Flexible Marathon Plan adapted from Ben Parkes 15/16-Week Improver Plan
+        // Workouts are organized per week without fixed calendar days to allow maximum scheduling flexibility.
         const generatePlanData = () => {
-            const plan = [];
-            
-            // Phase 1: Base Rebuilding - Mix of short intervals (Target hard volume: ~3.2km)
-            plan.push(createStandardWeek(1, 27, "Intervals: 2km warm-up. 8 x 400m at Interval Pace (4:15-4:25/km) with 400m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "10 km strictly easy pace."));
-            plan.push(createStandardWeek(2, 28, "Intervals: 2km warm-up. 4 x 800m at Interval Pace (4:15-4:25/km) with 400m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "12 km strictly easy pace."));
-            plan.push(createStandardWeek(3, 31, "Speed: 2km warm-up. 16 x 200m fast (~4:15/km) with 200m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "14 km strictly easy pace."));
-            plan.push(createStandardWeek(4, 33, "Ladder: 2km warm-up. 1km, 800m, 600m, 400m, 400m at Interval Pace. Equal distance jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "16 km strictly easy pace."));
-            plan.push(createStandardWeek(5, 29, "Intervals: 2km warm-up. 3 x 1km at Interval Pace (4:15-4:25/km) with 500m jog recovery. 2km cool-down.", "6 to 8 km relaxed, conversational pace.", "14 km strictly easy pace. (Cutback week)"));
+            return [
+                // ==================== PHASE 1: PREP & BASE (WEEKS 1 - 4) ====================
+                {
+                    week: 1,
+                    phase: 'Prep',
+                    phaseType: 'prep',
+                    totalKm: 24,
+                    notes: "Here we go, week 1 of marathon training! It's great to be a part of your journey. Consistency is key in these early weeks. Focus on keeping your easy runs truly conversational. Complete these workouts whenever fits best into your schedule!",
+                    sessions: [
+                        { id: 'w1-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '5 km Easy Pace (5:35-6:00/km) + 4x 20s Strides with 45-60s rest in the second half.' },
+                        { id: 'w1-2', type: 'run', load: 'Medium', title: 'Tempo Run', desc: '6 km: 2 km Easy Pace warm-up, 2 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace cool-down.' },
+                        { id: 'w1-3', type: 'strength', load: 'Medium', title: 'Strength & Conditioning (30 Mins)', desc: 'Bodyweight squats, lunges, calf raises, glute bridges, and core planks to build structural stability.' },
+                        { id: 'w1-4', type: 'run', load: 'Medium', title: 'Long Run', desc: '13 km strictly Easy Pace (5:35-6:00/km). Keep it relaxed and conversational throughout.' }
+                    ]
+                },
+                {
+                    week: 2,
+                    phase: 'Prep',
+                    phaseType: 'prep',
+                    totalKm: 27,
+                    notes: "You may find running at the required easy pace is a challenge, possibly slower than you're used to, but be patient! It is fundamental to building aerobic capacity and staying injury-free.",
+                    sessions: [
+                        { id: 'w2-1', type: 'run', load: 'Low', title: 'Easy Run', desc: '6 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w2-2', type: 'run', load: 'Medium', title: 'Progression Run', desc: '7 km: 2 km Easy Pace, 2 km Marathon Pace (4:58/km), 1 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w2-3', type: 'strength', load: 'Medium', title: 'Strength & Conditioning (30 Mins)', desc: 'Core stability, step-ups, single-leg balance, and calf raises.' },
+                        { id: 'w2-4', type: 'run', load: 'Medium', title: 'Long Run', desc: '14 km: 8 km Easy Pace, 4 km Marathon Pace (4:58/km), 2 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 3,
+                    phase: 'Prep',
+                    phaseType: 'prep',
+                    totalKm: 30,
+                    notes: "This week introduces interval work! Don't sprint—aim for your 5k-10k pace (4:15-4:25/km) and stay in control across all repetitions. Smooth cadence and relaxed shoulders.",
+                    sessions: [
+                        { id: 'w3-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '6 km Easy Pace + 4x 20s Strides with 45-60s rest.' },
+                        { id: 'w3-2', type: 'run', load: 'High', title: 'Intervals', desc: '10 mins Easy Pace warm-up, 5x 3 mins Interval Pace (4:15-4:25/km) with 2 mins walk recovery, 10 mins Easy Pace cool-down (~7 km total).' },
+                        { id: 'w3-3', type: 'strength', load: 'Medium', title: 'Strength & Conditioning (30 Mins)', desc: 'Squats, split squats, deadlifts/hinges, side planks, and calf raises.' },
+                        { id: 'w3-4', type: 'run', load: 'High', title: 'Long Run with MP Block', desc: '16 km: 5 km Easy Pace, 6 km Marathon Pace (4:58/km), 5 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 4,
+                    phase: 'Recovery',
+                    phaseType: 'recovery',
+                    totalKm: 25,
+                    notes: "Here is your first recovery week! Mileage and intensity are slightly reduced to give your body a chance to absorb all the training from the last few weeks. Adaptation happens during recovery!",
+                    sessions: [
+                        { id: 'w4-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '5 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w4-2', type: 'run', load: 'Medium', title: 'Tempo Run', desc: '5 km: 2 km Easy Pace, 2 km Tempo Pace (4:35-4:45/km), 1 km Easy Pace.' },
+                        { id: 'w4-3', type: 'strength', load: 'Medium', title: 'Mobility & Gentle Core (30 Mins)', desc: 'Focus on foam rolling, hip mobility, stretching, and gentle core activation.' },
+                        { id: 'w4-4', type: 'run', load: 'Medium', title: 'Long Run (Cutback)', desc: '14 km: 5 km Easy Pace, 5 km Marathon Pace (4:58/km), 4 km Easy Pace.' }
+                    ]
+                },
 
-            // Phase 2: Building the Engine - Variations of Tempo (Target hard volume: ~6km)
-            const p2Run2 = "8 to 10 km easy. Add 4 x 20-second strides at the end.";
-            plan.push(createStandardWeek(6, 37, "Tempo: 2km warm-up, 6km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p2Run2, "18 km easy pace."));
-            plan.push(createStandardWeek(7, 39, "Broken Tempo: 2km warm-up, 3 x 2km at Tempo Pace (4:35-4:45/km) with 2 mins jog recovery, 2km cool-down.", p2Run2, "20 km easy pace."));
-            plan.push(createStandardWeek(8, 41, "Tempo Pyramid: 2km warm-up. 2km, 3km, 1km at Tempo Pace (4:35-4:45/km). 3 mins jog between each. 2km cool-down.", p2Run2, "22 km easy pace."));
-            plan.push(createStandardWeek(9, 36, "Tempo: 2km warm-up, 5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p2Run2, "18 km easy pace. (Cutback week)"));
-            plan.push(createStandardWeek(10, 45, "Tempo Intervals: 2km warm-up. 4 x 1.5km at Tempo Pace (4:35-4:45/km) with 90 sec jog recovery. 2km cool-down.", p2Run2, "24 km. Integrate last 5km at Marathon Pace (MP)."));
-            plan.push(createStandardWeek(11, 43, "Broken Tempo: 2km warm-up. 1km, 2km, 2km, 1km at Tempo Pace. 90 sec jog recovery between each. 2km cool-down.", p2Run2, "24 km. Integrate last 5km at Marathon Pace (MP)."));
-            plan.push(createStandardWeek(12, 46, "Tempo: 2km warm-up, 6.5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p2Run2, "26 km. Integrate last 5km at Marathon Pace (MP)."));
+                // ==================== PHASE 2: BUILD PHASE 1 (WEEKS 5 - 8) ====================
+                {
+                    week: 5,
+                    phase: 'Build Phase 1',
+                    phaseType: 'build',
+                    totalKm: 33,
+                    notes: "Entering Build Phase 1! We are gradually lengthening the long run and introducing longer alternating marathon pace segments. Practice taking small sips of water during your long run.",
+                    sessions: [
+                        { id: 'w5-1', type: 'run', load: 'Low', title: 'Easy Run', desc: '6 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w5-2', type: 'run', load: 'Medium', title: 'Progression Run', desc: '7 km: 2 km Easy Pace, 2 km Marathon Pace (4:58/km), 1 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w5-3', type: 'strength', load: 'Medium', title: 'Strength & Conditioning (30 Mins)', desc: 'Lunges, squats, step-ups, calf raises, and core work.' },
+                        { id: 'w5-4', type: 'run', load: 'High', title: 'Long Run with Alternating Blocks', desc: '18 km: 3x (4 km Easy Pace / 2 km Marathon Pace).' }
+                    ]
+                },
+                {
+                    week: 6,
+                    phase: 'Build Phase 1',
+                    phaseType: 'build',
+                    totalKm: 36,
+                    notes: "Hitting 20 km this week! If you feel tired during runs, it's fine to have a brief walk break to reset and get your breath back. Consistency and listening to your body are what matter.",
+                    sessions: [
+                        { id: 'w6-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '7 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w6-2', type: 'run', load: 'High', title: 'Intervals', desc: '10 mins Easy Pace warm-up, 6x 3 mins Interval Pace (4:15-4:25/km) with 2 mins walk recovery, 10 mins Easy Pace cool-down (~8 km total).' },
+                        { id: 'w6-3', type: 'strength', load: 'Medium', title: 'Strength & Conditioning (30 Mins)', desc: 'Squats, calf raises, glute bridges, and side planks.' },
+                        { id: 'w6-4', type: 'run', load: 'High', title: 'Long Run (Milestone: 20km)', desc: '20 km strictly Easy Pace (5:35-6:00/km). Smooth, disciplined pacing.' }
+                    ]
+                },
+                {
+                    week: 7,
+                    phase: 'Build Phase 1',
+                    phaseType: 'build',
+                    totalKm: 40,
+                    notes: "Start testing race-day fueling! On runs over 90 mins, take an energy gel or chews every 30-45 minutes with water. Find which brands and flavors your stomach digests comfortably.",
+                    sessions: [
+                        { id: 'w7-1', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '5 km Easy Pace + 30 mins Strength & Conditioning (lunges, squats, calf raises, core).' },
+                        { id: 'w7-2', type: 'run', load: 'Medium', title: 'Tempo Run', desc: '7 km: 2 km Easy Pace, 3 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w7-3', type: 'run', load: 'Low', title: 'Aerobic Maintenance + Strides', desc: '5 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w7-4', type: 'run', load: 'High', title: 'Long Run with MP Middle', desc: '22 km: 12 km Easy Pace, 8 km Marathon Pace (4:58/km), 2 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 8,
+                    phase: 'Recovery',
+                    phaseType: 'recovery',
+                    totalKm: 32,
+                    notes: "Recovery week 2! Celebrate completing 22 km. Keep non-running days truly restorative: do light stretching and foam rolling to ease tightness without adding fatigue.",
+                    sessions: [
+                        { id: 'w8-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '6 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w8-2', type: 'run', load: 'High', title: 'Intervals (800m Reps)', desc: '10 mins Easy Pace warm-up, 5x 800m Interval Pace (4:15-4:25/km) with 2 mins walk recovery, 10 mins Easy Pace cool-down (~8 km total).' },
+                        { id: 'w8-3', type: 'strength', load: 'Medium', title: 'Mobility & Core (30 Mins)', desc: 'Hip flexor mobility, hamstrings, gentle core, and foam rolling.' },
+                        { id: 'w8-4', type: 'run', load: 'Medium', title: 'Long Run (Cutback)', desc: '17 km Easy Pace (5:35-6:00/km).' }
+                    ]
+                },
 
-            // Phase 3: Peak Specificity - Extending Tempo endurance (Target hard volume: ~8-9km)
-            const p3Run2 = "10 km easy pace.";
-            plan.push(createStandardWeek(13, 52, "Long Intervals: 2km warm-up, 4 x 2km at Tempo Pace (4:35-4:45/km) with 400m jog recovery, 2km cool-down.", p3Run2, "28 km. Mostly easy."));
-            plan.push(createStandardWeek(14, 54, "Cruiser Intervals: 2km warm-up, 2 x 4km at Tempo Pace (4:35-4:45/km) with 800m jog recovery, 2km cool-down.", p3Run2, "30 km. Mostly easy."));
-            plan.push(createStandardWeek(15, 43, "Tempo: 2km warm-up, 5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p3Run2, "24 km easy pace. (Cutback week)"));
-            plan.push(createStandardWeek(16, 54, "Tempo Block: 2km warm-up, 8km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", p3Run2, "32 km. Run the middle 10km at strict Marathon Pace."));
-            plan.push(createStandardWeek(17, 57, "Peak Intervals: 2km warm-up, 3 x 3km at Tempo Pace (4:35-4:45/km) with 500m jog recovery, 2km cool-down.", p3Run2, "32 km. Run the middle 15km at strict Marathon Pace."));
+                // ==================== PHASE 3: BUILD PHASE 2 (WEEKS 9 - 13) ====================
+                {
+                    week: 9,
+                    phase: 'Build Phase 2',
+                    phaseType: 'build',
+                    totalKm: 42,
+                    notes: "Build Phase 2 ramps up volume safely toward the peak. We now include a 4th weekly run to prepare your legs for higher weekly volume. Keep easy runs disciplined!",
+                    sessions: [
+                        { id: 'w9-1', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '6 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w9-2', type: 'run', load: 'Medium', title: 'Progression Run', desc: '8 km: 2 km Easy Pace, 3 km Marathon Pace (4:58/km), 1 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w9-3', type: 'run', load: 'Low', title: 'Aerobic Maintenance + Strides', desc: '5 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w9-4', type: 'run', load: 'High', title: 'Long Run with MP Finish', desc: '23 km: 16 km Easy Pace, 5 km Marathon Pace (4:58/km), 2 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 10,
+                    phase: 'Build Phase 2',
+                    phaseType: 'build',
+                    totalKm: 45,
+                    notes: "Have you considered doing a practice race or time trial? A half marathon around this stage is fantastic to test pacing, race routine, and gear in a crowd setting.",
+                    sessions: [
+                        { id: 'w10-1', type: 'run', load: 'Low', title: 'Easy Run', desc: '7 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w10-2', type: 'run', load: 'High', title: 'Intervals', desc: '10 mins Easy Pace warm-up, 6x 4 mins Interval Pace (4:15-4:25/km) with 2 mins walk recovery, 10 mins Easy Pace cool-down (~8 km total).' },
+                        { id: 'w10-3', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '5 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w10-4', type: 'run', load: 'High', title: 'Long Run (MP Alternating)', desc: '25 km: 4x (2 km Easy Pace / 3 km Marathon Pace) + 5 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 11,
+                    phase: 'Build Phase 2',
+                    phaseType: 'build',
+                    totalKm: 47,
+                    notes: "High 20s long runs require dedicated post-run recovery. Refuel with carbohydrates and protein within 45 minutes of finishing your run, and rehydrate steadily through the week.",
+                    sessions: [
+                        { id: 'w11-1', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '6 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w11-2', type: 'run', load: 'Medium', title: 'Tempo Run', desc: '8 km: 2 km Easy Pace, 4 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w11-3', type: 'run', load: 'Low', title: 'Aerobic Maintenance + Strides', desc: '6 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w11-4', type: 'run', load: 'High', title: 'Long Run with MP Block', desc: '27 km: 18 km Easy Pace, 7 km Marathon Pace (4:58/km), 2 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 12,
+                    phase: 'Build Phase 2',
+                    phaseType: 'build',
+                    totalKm: 49,
+                    notes: "Final week of Build Phase 2! You reach 28 km on your long run. Mentally break the distance into manageable 5km blocks. You have built a tremendously robust aerobic foundation!",
+                    sessions: [
+                        { id: 'w12-1', type: 'run', load: 'Low', title: 'Easy Run', desc: '7 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w12-2', type: 'run', load: 'High', title: 'Intervals (2 Min Reps)', desc: '10 mins Easy Pace warm-up, 8x 2 mins Interval Pace (4:15-4:25/km) with 90s walk recovery, 10 mins Easy Pace cool-down (~8 km total).' },
+                        { id: 'w12-3', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '6 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w12-4', type: 'run', load: 'High', title: 'Long Run with Double MP Blocks', desc: '28 km: 6 km Easy, 5 km Marathon Pace, 6 km Easy, 5 km Marathon Pace, 6 km Easy.' }
+                    ]
+                },
+                {
+                    week: 13,
+                    phase: 'Pre-Peak Recovery',
+                    phaseType: 'recovery',
+                    totalKm: 38,
+                    notes: "Pre-Peak Recovery Week! A crucial cutback week before launching into our 4 peak weeks. Absorb the heavy training of Build 2. Sleep well so your legs are primed for peak volume!",
+                    sessions: [
+                        { id: 'w13-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '6 km Easy Pace + 4x 20s Strides.' },
+                        { id: 'w13-2', type: 'run', load: 'Medium', title: 'Tempo Run', desc: '6 km: 2 km Easy Pace, 2 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w13-3', type: 'strength', load: 'Medium', title: 'Mobility & Light Core (30 Mins)', desc: 'Gentle core, glute activation, foam rolling, and mobility.' },
+                        { id: 'w13-4', type: 'run', load: 'Medium', title: 'Long Run (Cutback)', desc: '20 km Easy Pace (5:35-6:00/km).' }
+                    ]
+                },
 
-            // Phase 4: Taper and Race
-            plan.push(createStandardWeek(18, 37, "Tempo: 2km warm-up, 5km continuous at Tempo Pace (4:35-4:45/km), 2km cool-down.", "8 km easy pace.", "20 km (mostly easy, last 3km at MP)."));
-            plan.push(createStandardWeek(19, 27, "Sharp Intervals: 2km warm-up, 4 x 800m at Interval Pace (4:15-4:25/km) with 400m jog recovery, 2km cool-down.", "6 km easy pace.", "12 km easy pace."));
-            
-            // Week 20 is custom
-            plan.push({
-                week: 20,
-                totalKm: 51,
-                sessions: [
-                    { id: `w20-1`, day: 'Monday', type: 'strength', title: 'Light Stretch / Mobility', desc: 'Gentle stretching and mobility work. No heavy lifting.' },
-                    { id: `w20-2`, day: 'Tuesday', type: 'run', title: 'Taper Run', desc: '20 mins easy with a few short sprints to stay sharp.' },
-                    { id: `w20-3`, day: 'Thursday', type: 'run', title: 'Shakeout', desc: '5 km very easy shakeout.' },
-                    { id: `w20-4`, day: 'Sunday', type: 'race', title: 'TOKYO MARATHON', desc: 'Race day! Target time: 3:30 (4:58/km).' }
-                ]
-            });
+                // ==================== PHASE 4: PEAK PHASE (WEEKS 14 - 17) ====================
+                // Matches Ben Parkes Weeks 9 - 12 Peak Volume Exactly
+                {
+                    week: 14,
+                    phase: 'Peak Phase',
+                    phaseType: 'peak',
+                    totalKm: 51,
+                    notes: "Welcome to the Peak Phase! Every runner will struggle with motivation at some point. If that happens, run with a friend, explore a new route, and remember why you started. You can do this!",
+                    sessions: [
+                        { id: 'w14-1', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '6 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w14-2', type: 'run', load: 'High', title: 'Progression Run', desc: '10 km: 3 km Easy Pace, 3 km Marathon Pace (4:58/km), 2 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w14-3', type: 'run', load: 'Low', title: 'Easy Run', desc: '6 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w14-4', type: 'run', load: 'High', title: 'Long Run with 10km MP Block', desc: '29 km: 16 km Easy Pace, 10 km Marathon Pace (4:58/km), 3 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 15,
+                    phase: 'Peak Phase',
+                    phaseType: 'peak',
+                    totalKm: 55,
+                    notes: "Give yourself a huge pat on the back for the hard work you've put in! Start locking down your race kit—shoes, socks, clothes, and race day cap. Practice running in your exact setup!",
+                    sessions: [
+                        { id: 'w15-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '8 km Easy Pace + 5x 20s Strides.' },
+                        { id: 'w15-2', type: 'run', load: 'High', title: 'Intervals (10x 2 Mins)', desc: '10 mins Easy Pace warm-up, 10x 2 mins Interval Pace (4:15-4:25/km) with 2 mins walk recovery, 10 mins Easy Pace cool-down (~9 km total).' },
+                        { id: 'w15-3', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '6 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w15-4', type: 'run', load: 'High', title: 'Long Run (32km)', desc: '32 km strictly Easy Pace (5:35-6:00/km). Controlled endurance.' }
+                    ]
+                },
+                {
+                    week: 16,
+                    phase: 'Peak Phase',
+                    phaseType: 'peak',
+                    totalKm: 61,
+                    notes: "Your weekend long run with Marathon Pace blocks is the cornerstone of marathon confidence. Fuel every 30-45 minutes with precision so race day execution becomes second nature.",
+                    sessions: [
+                        { id: 'w16-1', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '9 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w16-2', type: 'run', load: 'High', title: 'Tempo Run', desc: '10 km: 3 km Easy Pace, 4 km Tempo Pace (4:35-4:45/km), 3 km Easy Pace.' },
+                        { id: 'w16-3', type: 'run', load: 'Low', title: 'Easy Run', desc: '10 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w16-4', type: 'run', load: 'High', title: 'Long Run with MP Alternating', desc: '32 km: 7 km Easy, 7 km Marathon Pace, 6 km Easy, 6 km Marathon Pace, 6 km Easy.' }
+                    ]
+                },
+                {
+                    week: 17,
+                    phase: 'Peak Phase (Peak Load)',
+                    phaseType: 'peak',
+                    totalKm: 64,
+                    notes: "The longest run of the entire plan this week—35 km! Stash hydration bottles along your route or carry your pack. Keep steady, relax your shoulders, and celebrate reaching the peak of the mountain!",
+                    sessions: [
+                        { id: 'w17-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '10 km Easy Pace + 6x 20s Strides.' },
+                        { id: 'w17-2', type: 'run', load: 'High', title: 'Intervals (3x 8 Mins Tempo)', desc: '15 mins Easy Pace warm-up, 3x 8 mins Tempo Pace (4:35-4:45/km) with 2 mins walk recovery, 15 mins Easy Pace cool-down (~9 km total).' },
+                        { id: 'w17-3', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '10 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w17-4', type: 'run', load: 'High', title: 'Peak Long Run (35km)', desc: '35 km strictly Easy Pace (5:35-6:00/km). The biggest run of the plan!' }
+                    ]
+                },
 
-            return plan;
+                // ==================== PHASE 5: TAPER & RACE (WEEKS 18 - 20) ====================
+                // Matches Ben Parkes Weeks 13 - 15 Taper & Race Exactly
+                {
+                    week: 18,
+                    phase: 'Taper Phase',
+                    phaseType: 'taper',
+                    totalKm: 55,
+                    notes: "The taper is here! Mileage begins reducing so your body can absorb all the training from the peak weeks. These runs maintain race rhythm without overloading your body.",
+                    sessions: [
+                        { id: 'w18-1', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '8 km Easy Pace + 30 mins Strength & Conditioning.' },
+                        { id: 'w18-2', type: 'run', load: 'High', title: 'Progression Run', desc: '10 km: 3 km Easy Pace, 3 km Marathon Pace (4:58/km), 2 km Tempo Pace (4:35-4:45/km), 2 km Easy Pace.' },
+                        { id: 'w18-3', type: 'run', load: 'Low', title: 'Easy Run', desc: '10 km Easy Pace (5:35-6:00/km).' },
+                        { id: 'w18-4', type: 'run', load: 'High', title: 'Long Run with MP', desc: '27 km: 8 km Easy Pace, 11 km Marathon Pace (4:58/km), 8 km Easy Pace.' }
+                    ]
+                },
+                {
+                    week: 19,
+                    phase: 'Taper Phase',
+                    phaseType: 'taper',
+                    totalKm: 45,
+                    notes: "Finalize your race travel and logistics! Confirm route to start line, bag drop, and family meeting spots. Prioritize 8+ hours of sleep and reducing daily life stress.",
+                    sessions: [
+                        { id: 'w19-1', type: 'run', load: 'Low', title: 'Easy Run + Strides', desc: '8 km Easy Pace + 5x 20s Strides.' },
+                        { id: 'w19-2', type: 'run', load: 'High', title: 'Sharp Intervals (800m Reps)', desc: '15 mins Easy Pace warm-up, 5x 800m Interval Pace (4:15-4:25/km) with 2 mins walk recovery, 15 mins Easy Pace cool-down (~9 km total).' },
+                        { id: 'w19-3', type: 'run', load: 'Medium', title: 'Easy Run + Strength', desc: '10 km Easy Pace + 30 mins light Strength & Mobility.' },
+                        { id: 'w19-4', type: 'run', load: 'Medium', title: 'Taper Long Run', desc: '18 km strictly Easy Pace (5:35-6:00/km).' }
+                    ]
+                },
+                {
+                    week: 20,
+                    phase: 'Race Week',
+                    phaseType: 'race',
+                    totalKm: 60,
+                    notes: "Here we go, race week is here! After 20 weeks of dedicated preparation, it's now your time to shine! Trust your training, pace with discipline, smile, and LET'S GET THIS DONE!",
+                    sessions: [
+                        { id: 'w20-1', type: 'run', load: 'Low', title: 'Easy Run', desc: '5 km Easy Pace (5:35-6:00/km). Keep it effortless.' },
+                        { id: 'w20-2', type: 'run', load: 'Medium', title: 'Sharpening Intervals', desc: '10 mins Easy Pace, 4x 5 mins Marathon Pace (4:58/km) with 2 mins walk recovery, 10 mins Easy Pace (~8 km total).' },
+                        { id: 'w20-3', type: 'run', load: 'Low', title: 'Pre-Race Shakeout', desc: '5 km very easy shakeout run to stay loose. Hydrate and relax afterwards.' },
+                        { id: 'w20-4', type: 'race', load: 'High', title: 'TOKYO MARATHON 2027', desc: 'Race Day! 42.195 km. Target finish time: 3:30 (Goal Marathon Pace: 4:58/km). Execute your fuel plan and enjoy every moment!' }
+                    ]
+                }
+            ];
         };
 
         const PLAN_DATA = generatePlanData();
@@ -150,6 +373,8 @@
                 }
             });
             const [currentWeek, setCurrentWeek] = React.useState(1);
+            const [exportStatus, setExportStatus] = React.useState('');
+            const fileInputRef = React.useRef(null);
 
             React.useEffect(() => {
                 localStorage.setItem('tokyoMarathonData', JSON.stringify(sessionData));
@@ -180,127 +405,262 @@
                 }));
             };
 
-            const activeWeekData = PLAN_DATA.find(w => w.week === currentWeek);
+            const activeWeekData = PLAN_DATA.find(w => w.week === currentWeek) || PLAN_DATA[0];
 
-            const handleExport = async () => {
-                const dataStr = JSON.stringify(sessionData, null, 2);
-                const blob = new Blob([dataStr], { type: 'application/json' });
-                const file = new File([blob], "tokyo-training-data.json", { type: "application/json" });
+            // Calculate completed workouts in current week
+            const weekCompletedCount = activeWeekData.sessions.filter(s => sessionData[s.id]?.completed).length;
 
-                // On iOS, this opens the native Share Sheet (Save to Files, Email, etc.)
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    try {
-                        await navigator.share({
-                            files: [file],
-                            title: 'Tokyo Training Data',
-                            text: 'My marathon training progress backup.'
-                        });
-                    } catch (error) {
-                        console.log('Sharing failed', error);
-                    }
-                } else {
-                    // Fallback for desktop browsers
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'tokyo-training-data.json';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+            // Phase style badges
+            const getPhaseBadge = (phaseType) => {
+                switch(phaseType) {
+                    case 'prep':
+                        return { bg: 'bg-emerald-50 border-emerald-200 text-emerald-700', label: 'Prep Phase' };
+                    case 'recovery':
+                        return { bg: 'bg-teal-50 border-teal-200 text-teal-700', label: 'Recovery Week' };
+                    case 'build':
+                        return { bg: 'bg-blue-50 border-blue-200 text-blue-700', label: 'Build Phase' };
+                    case 'peak':
+                        return { bg: 'bg-rose-50 border-rose-200 text-rose-700', label: 'Peak Phase' };
+                    case 'taper':
+                        return { bg: 'bg-purple-50 border-purple-200 text-purple-700', label: 'Taper Phase' };
+                    case 'race':
+                        return { bg: 'bg-amber-50 border-amber-200 text-amber-700', label: 'Race Week' };
+                    default:
+                        return { bg: 'bg-slate-50 border-slate-200 text-slate-700', label: 'Training' };
                 }
             };
 
+            const getLoadBadge = (load) => {
+                switch(load) {
+                    case 'Low':
+                        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                    case 'Medium':
+                        return 'bg-amber-50 text-amber-700 border-amber-200';
+                    case 'High':
+                        return 'bg-rose-50 text-rose-700 border-rose-200';
+                    default:
+                        return 'bg-slate-50 text-slate-700 border-slate-200';
+                }
+            };
+
+            const handleExport = () => {
+                try {
+                    const dataStr = JSON.stringify(sessionData, null, 2);
+                    const blob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    const today = new Date().toISOString().slice(0, 10);
+                    a.href = url;
+                    a.download = `tokyo-marathon-data-${today}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, 200);
+
+                    setExportStatus('Saved!');
+                    setTimeout(() => setExportStatus(''), 2500);
+                } catch (error) {
+                    console.error('Export failed:', error);
+                    alert('Export failed: ' + error.message);
+                }
+            };
+
+            const handleImportClick = () => {
+                if (fileInputRef.current) {
+                    fileInputRef.current.click();
+                }
+            };
+
+            const handleFileImport = (event) => {
+                const file = event.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        if (imported && typeof imported === 'object') {
+                            const upgraded = {};
+                            for (const key in imported) {
+                                if (typeof imported[key] === 'boolean') {
+                                    upgraded[key] = { completed: imported[key], rpe: '', notes: '' };
+                                } else {
+                                    upgraded[key] = imported[key];
+                                }
+                            }
+                            setSessionData(prev => ({ ...prev, ...upgraded }));
+                            alert('Training data imported successfully!');
+                        }
+                    } catch (err) {
+                        alert('Could not parse the JSON backup file.');
+                    }
+                };
+                reader.readAsText(file);
+                event.target.value = '';
+            };
+
+            const phaseBadge = getPhaseBadge(activeWeekData.phaseType);
+
             return (
-                <div className="min-h-screen pb-20 md:pb-10">
+                <div className="min-h-screen pb-20 md:pb-12 text-slate-900">
                     {/* Header */}
-                    <header className="bg-slate-900 text-white sticky top-0 z-10 shadow-md">
+                    <header className="bg-slate-900 text-white sticky top-0 z-20 shadow-md">
                         <div className="max-w-3xl mx-auto px-4 py-5">
-                            <div className="flex justify-between items-start mb-1">
-                                <h1 className="text-2xl font-bold tracking-tight">Tokyo 2027 Tracker</h1>
-                                <button 
-                                    onClick={handleExport} 
-                                    className="text-xs font-semibold bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors active:scale-95"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
-                                    Export
-                                </button>
+                            <div className="flex justify-between items-start mb-1 gap-3">
+                                <div>
+                                    <h1 className="text-2xl font-bold tracking-tight">Tokyo 2027 Tracker</h1>
+                                    <p className="text-slate-400 text-sm mt-0.5">Target: 3:30 • 20 Week Plan (Flexible Schedule)</p>
+                                </div>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                    <input 
+                                        type="file" 
+                                        ref={fileInputRef} 
+                                        onChange={handleFileImport} 
+                                        accept=".json" 
+                                        className="hidden" 
+                                    />
+                                    <button 
+                                        onClick={handleImportClick} 
+                                        className="text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors border border-slate-700 active:scale-95 shadow-sm"
+                                        title="Import backup JSON"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        </svg>
+                                        Import
+                                    </button>
+                                    <button 
+                                        onClick={handleExport} 
+                                        className="text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors active:scale-95 shadow-sm"
+                                        title="Download backup JSON"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                        {exportStatus || 'Export JSON'}
+                                    </button>
+                                </div>
                             </div>
-                            <p className="text-slate-400 text-sm mb-4">Target: 3:30 • 20 Week Plan</p>
                             
                             {/* Progress Bar */}
-                            <div className="flex items-center justify-between text-xs font-semibold mb-2">
-                                <span>Overall Progress</span>
-                                <span>{completedCount} / {totalSessions} ({progressPercentage}%)</span>
-                            </div>
-                            <div className="w-full bg-slate-800 rounded-full h-2.5">
-                                <div 
-                                    className="bg-blue-500 h-2.5 rounded-full transition-all duration-500 ease-out" 
-                                    style={{ width: `${progressPercentage}%` }}
-                                ></div>
+                            <div className="mt-4 pt-3 border-t border-slate-800">
+                                <div className="flex items-center justify-between text-xs font-semibold mb-2 text-slate-300">
+                                    <span>Overall Training Progress</span>
+                                    <span>{completedCount} / {totalSessions} completed ({progressPercentage}%)</span>
+                                </div>
+                                <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                                    <div 
+                                        className="bg-blue-500 h-2.5 rounded-full transition-all duration-500 ease-out" 
+                                        style={{ width: `${progressPercentage}%` }}
+                                    ></div>
+                                </div>
                             </div>
                         </div>
                     </header>
 
                     <main className="max-w-3xl mx-auto px-4 py-6">
                         
-                        <div className="flex items-center justify-between mb-6 bg-white p-3 rounded-xl shadow-sm border border-slate-100">
-                            <button 
-                                onClick={() => setCurrentWeek(Math.max(1, currentWeek - 1))}
-                                disabled={currentWeek === 1}
-                                className={`p-2 rounded-lg font-medium text-sm transition-colors ${currentWeek === 1 ? 'text-slate-300' : 'text-blue-600 hover:bg-blue-50 active:bg-blue-100'}`}
-                            >
-                                ← Prev
-                            </button>
-                            
-                            <div className="flex flex-col items-center justify-center -mt-1">
-                                <select 
-                                    value={currentWeek} 
-                                    onChange={(e) => setCurrentWeek(Number(e.target.value))}
-                                    className="font-bold text-lg bg-transparent focus:outline-none cursor-pointer text-center appearance-none text-slate-800"
+                        {/* Week Navigator */}
+                        <div className="mb-5 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                            <div className="flex items-center justify-between gap-2">
+                                <button 
+                                    onClick={() => setCurrentWeek(Math.max(1, currentWeek - 1))}
+                                    disabled={currentWeek === 1}
+                                    className={`px-3 py-2 rounded-lg font-semibold text-sm transition-colors flex items-center gap-1 ${
+                                        currentWeek === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-blue-600 hover:bg-blue-50 active:bg-blue-100'
+                                    }`}
                                 >
-                                    {PLAN_DATA.map(w => (
-                                        <option key={w.week} value={w.week}>Week {w.week}</option>
-                                    ))}
-                                </select>
-                                <div className="text-xs font-semibold text-slate-500 flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                    </svg>
-                                    {activeWeekData.totalKm} km this week
+                                    ← Prev
+                                </button>
+                                
+                                <div className="flex flex-col items-center justify-center text-center">
+                                    <div className="flex items-center gap-2">
+                                        <select 
+                                            value={currentWeek} 
+                                            onChange={(e) => setCurrentWeek(Number(e.target.value))}
+                                            className="font-extrabold text-xl bg-transparent focus:outline-none cursor-pointer text-slate-800 hover:text-blue-600 transition-colors"
+                                        >
+                                            {PLAN_DATA.map(w => (
+                                                <option key={w.week} value={w.week}>
+                                                    Week {w.week} ({w.totalKm} km)
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+                                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${phaseBadge.bg}`}>
+                                            {activeWeekData.phase}
+                                        </span>
+                                        <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                            </svg>
+                                            {activeWeekData.totalKm} km volume
+                                        </span>
+                                    </div>
                                 </div>
+
+                                <button 
+                                    onClick={() => setCurrentWeek(Math.min(20, currentWeek + 1))}
+                                    disabled={currentWeek === 20}
+                                    className={`px-3 py-2 rounded-lg font-semibold text-sm transition-colors flex items-center gap-1 ${
+                                        currentWeek === 20 ? 'text-slate-300 cursor-not-allowed' : 'text-blue-600 hover:bg-blue-50 active:bg-blue-100'
+                                    }`}
+                                >
+                                    Next →
+                                </button>
                             </div>
 
-                            <button 
-                                onClick={() => setCurrentWeek(Math.min(20, currentWeek + 1))}
-                                disabled={currentWeek === 20}
-                                className={`p-2 rounded-lg font-medium text-sm transition-colors ${currentWeek === 20 ? 'text-slate-300' : 'text-blue-600 hover:bg-blue-50 active:bg-blue-100'}`}
-                            >
-                                Next →
-                            </button>
+                            {/* Flexible Schedule summary */}
+                            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                                <span className="flex items-center gap-1.5">
+                                    <span className="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
+                                    <strong className="text-slate-700 font-semibold">Flexible Schedule:</strong> Complete in any order this week
+                                </span>
+                                <span className="font-semibold text-slate-700">
+                                    {weekCompletedCount} / {activeWeekData.sessions.length} Completed
+                                </span>
+                            </div>
                         </div>
 
+                        {/* Coach Ben's Weekly Notes */}
+                        {activeWeekData.notes && (
+                            <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-4 shadow-sm flex items-start gap-3">
+                                <div className="p-2 bg-blue-100 text-blue-700 rounded-lg flex-shrink-0 mt-0.5">
+                                    <LightBulb className="w-5 h-5" />
+                                </div>
+                                <div className="text-sm">
+                                    <span className="font-bold text-blue-900 block mb-0.5">Coach's Weekly Briefing</span>
+                                    <p className="text-blue-800 leading-relaxed text-sm">
+                                        {activeWeekData.notes}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Workout Cards */}
                         <div className="space-y-4">
-                            {activeWeekData.sessions.map((session) => {
+                            {activeWeekData.sessions.map((session, index) => {
                                 const data = sessionData[session.id] || { completed: false, rpe: '', notes: '' };
                                 const isCompleted = data.completed;
                                 
                                 // Determine styling based on workout type
                                 let typeColor = "text-blue-600";
-                                let typeBg = "bg-blue-50";
+                                let typeBg = "bg-blue-50 border-blue-200";
                                 let Icon = Activity;
                                 
                                 if (session.type === 'strength') {
                                     typeColor = "text-purple-600";
-                                    typeBg = "bg-purple-50";
+                                    typeBg = "bg-purple-50 border-purple-200";
                                     Icon = Dumbbell;
                                 } else if (session.type === 'race') {
                                     typeColor = "text-amber-600";
-                                    typeBg = "bg-amber-50";
+                                    typeBg = "bg-amber-50 border-amber-200";
                                     Icon = Trophy;
                                 }
+
+                                const loadBadgeClass = getLoadBadge(session.load);
 
                                 return (
                                     <div 
@@ -319,14 +679,23 @@
                                                 {isCompleted ? (
                                                     <CheckCircle className="w-7 h-7 text-green-500" />
                                                 ) : (
-                                                    <Circle className="w-7 h-7 text-slate-300" />
+                                                    <Circle className="w-7 h-7 text-slate-300 hover:text-slate-400" />
                                                 )}
                                             </div>
                                             
                                             <div className="flex-grow">
-                                                <div className="flex items-center justify-between mb-1">
-                                                    <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">{session.day}</span>
-                                                    <span className={`text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 ${typeBg} ${typeColor}`}>
+                                                <div className="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                                            Workout {index + 1}
+                                                        </span>
+                                                        {session.load && (
+                                                            <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${loadBadgeClass}`}>
+                                                                {session.load} Load
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 border ${typeBg} ${typeColor}`}>
                                                         <Icon className="w-3.5 h-3.5" />
                                                         {session.type.charAt(0).toUpperCase() + session.type.slice(1)}
                                                     </span>
@@ -359,7 +728,7 @@
                                                         <span className="text-xs text-slate-400 italic hidden sm:inline">Rate perceived exertion</span>
                                                     </div>
                                                     <textarea 
-                                                        placeholder="Notes on mood, perceived effort, weather, pacing..."
+                                                        placeholder="Notes on pacing, perceived effort, fuelling, weather, shoes..."
                                                         value={data.notes || ''}
                                                         onChange={(e) => updateSessionDetails(session.id, 'notes', e.target.value)}
                                                         className="w-full bg-white border border-slate-300 text-slate-700 text-sm rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none h-24"
@@ -372,30 +741,38 @@
                             })}
                         </div>
 
+                        {/* Target Paces Reference */}
                         <div className="mt-10 bg-slate-100 p-5 rounded-xl border border-slate-200">
                             <h3 className="text-sm font-bold text-slate-800 mb-3 uppercase tracking-wider flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                Target Paces (3:30 Goal)
+                                Target Paces (3:30 Marathon Goal)
                             </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <div className="bg-white p-3 rounded-lg shadow-sm">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                                <div className="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
                                     <div className="text-xs text-slate-500 font-semibold mb-1">Interval Pace</div>
                                     <div className="font-bold text-slate-900 text-lg">4:15 - 4:25 <span className="text-sm font-normal text-slate-500">/km</span></div>
+                                    <div className="text-[11px] text-slate-400 mt-0.5">5k - 10k race pace</div>
                                 </div>
-                                <div className="bg-white p-3 rounded-lg shadow-sm">
+                                <div className="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
                                     <div className="text-xs text-slate-500 font-semibold mb-1">Tempo Pace</div>
                                     <div className="font-bold text-slate-900 text-lg">4:35 - 4:45 <span className="text-sm font-normal text-slate-500">/km</span></div>
+                                    <div className="text-[11px] text-slate-400 mt-0.5">Comfortably hard (1hr pace)</div>
                                 </div>
-                                <div className="bg-white p-3 rounded-lg shadow-sm">
+                                <div className="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
                                     <div className="text-xs text-slate-500 font-semibold mb-1">Marathon Pace (MP)</div>
                                     <div className="font-bold text-slate-900 text-lg">4:58 <span className="text-sm font-normal text-slate-500">/km</span></div>
+                                    <div className="text-[11px] text-slate-400 mt-0.5">Target 3:30 finish pace</div>
                                 </div>
-                                <div className="bg-white p-3 rounded-lg shadow-sm">
+                                <div className="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
                                     <div className="text-xs text-slate-500 font-semibold mb-1">Easy / Long Pace</div>
                                     <div className="font-bold text-slate-900 text-lg">5:35 - 6:00 <span className="text-sm font-normal text-slate-500">/km</span></div>
+                                    <div className="text-[11px] text-slate-400 mt-0.5">Strictly conversational</div>
                                 </div>
+                            </div>
+                            <div className="text-xs text-slate-500 bg-white/70 p-3 rounded-lg border border-slate-200 leading-relaxed">
+                                <strong className="text-slate-700">Strides:</strong> 20 second accelerations at ~95% effort with 45-60 seconds walking rest. Focus on quick cadence, upright posture, and good form.
                             </div>
                         </div>
 
