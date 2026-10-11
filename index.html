@@ -125,30 +125,107 @@
         const PLAN_DATA = generatePlanData();
 
         function App() {
-            // Local state for checking off workouts
-            const [completedSessions, setCompletedSessions] = React.useState({});
+            // Local state for checking off workouts and storing notes
+            const [sessionData, setSessionData] = React.useState(() => {
+                try {
+                    const saved = localStorage.getItem('tokyoMarathonData');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        const upgraded = {};
+                        // Upgrade legacy boolean state to object state
+                        for (const key in parsed) {
+                            if (typeof parsed[key] === 'boolean') {
+                                upgraded[key] = { completed: parsed[key], rpe: '', notes: '' };
+                            } else {
+                                upgraded[key] = parsed[key];
+                            }
+                        }
+                        return upgraded;
+                    }
+                    return {};
+                } catch (e) {
+                    return {};
+                }
+            });
             const [currentWeek, setCurrentWeek] = React.useState(1);
+
+            React.useEffect(() => {
+                localStorage.setItem('tokyoMarathonData', JSON.stringify(sessionData));
+            }, [sessionData]);
 
             // Calculate total progress
             const totalSessions = PLAN_DATA.reduce((acc, week) => acc + week.sessions.length, 0);
-            const completedCount = Object.keys(completedSessions).filter(k => completedSessions[k]).length;
+            const completedCount = Object.keys(sessionData).filter(k => sessionData[k]?.completed).length;
             const progressPercentage = Math.round((completedCount / totalSessions) * 100) || 0;
 
             const toggleSession = (id) => {
-                setCompletedSessions(prev => ({
+                setSessionData(prev => ({
                     ...prev,
-                    [id]: !prev[id]
+                    [id]: {
+                        ...prev[id],
+                        completed: !prev[id]?.completed
+                    }
+                }));
+            };
+
+            const updateSessionDetails = (id, field, value) => {
+                setSessionData(prev => ({
+                    ...prev,
+                    [id]: {
+                        ...prev[id],
+                        [field]: value
+                    }
                 }));
             };
 
             const activeWeekData = PLAN_DATA.find(w => w.week === currentWeek);
+
+            const handleExport = async () => {
+                const dataStr = JSON.stringify(sessionData, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const file = new File([blob], "tokyo-training-data.json", { type: "application/json" });
+
+                // On iOS, this opens the native Share Sheet (Save to Files, Email, etc.)
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: 'Tokyo Training Data',
+                            text: 'My marathon training progress backup.'
+                        });
+                    } catch (error) {
+                        console.log('Sharing failed', error);
+                    }
+                } else {
+                    // Fallback for desktop browsers
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'tokyo-training-data.json';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            };
 
             return (
                 <div className="min-h-screen pb-20 md:pb-10">
                     {/* Header */}
                     <header className="bg-slate-900 text-white sticky top-0 z-10 shadow-md">
                         <div className="max-w-3xl mx-auto px-4 py-5">
-                            <h1 className="text-2xl font-bold tracking-tight mb-1">Tokyo 2027 Tracker</h1>
+                            <div className="flex justify-between items-start mb-1">
+                                <h1 className="text-2xl font-bold tracking-tight">Tokyo 2027 Tracker</h1>
+                                <button 
+                                    onClick={handleExport} 
+                                    className="text-xs font-semibold bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors active:scale-95"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                    Export
+                                </button>
+                            </div>
                             <p className="text-slate-400 text-sm mb-4">Target: 3:30 • 20 Week Plan</p>
                             
                             {/* Progress Bar */}
@@ -197,7 +274,8 @@
 
                         <div className="space-y-4">
                             {activeWeekData.sessions.map((session) => {
-                                const isCompleted = !!completedSessions[session.id];
+                                const data = sessionData[session.id] || { completed: false, rpe: '', notes: '' };
+                                const isCompleted = data.completed;
                                 
                                 // Determine styling based on workout type
                                 let typeColor = "text-blue-600";
@@ -217,36 +295,68 @@
                                 return (
                                     <div 
                                         key={session.id}
-                                        onClick={() => toggleSession(session.id)}
-                                        className={`flex items-start p-4 rounded-xl border-2 transition-all cursor-pointer active:scale-[0.99] select-none
+                                        className={`flex flex-col p-4 rounded-xl border-2 transition-all select-none
                                             ${isCompleted 
-                                                ? 'bg-slate-50 border-slate-200 opacity-60' 
+                                                ? 'bg-slate-50 border-slate-200' 
                                                 : 'bg-white border-transparent shadow-sm hover:shadow-md'
                                             }`}
                                     >
-                                        <div className="flex-shrink-0 mr-4 mt-1">
-                                            {isCompleted ? (
-                                                <CheckCircle className="w-7 h-7 text-green-500" />
-                                            ) : (
-                                                <Circle className="w-7 h-7 text-slate-300" />
-                                            )}
-                                        </div>
-                                        
-                                        <div className="flex-grow">
-                                            <div className="flex items-center justify-between mb-1">
-                                                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">{session.day}</span>
-                                                <span className={`text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 ${typeBg} ${typeColor}`}>
-                                                    <Icon className="w-3.5 h-3.5" />
-                                                    {session.type.charAt(0).toUpperCase() + session.type.slice(1)}
-                                                </span>
+                                        <div 
+                                            onClick={() => toggleSession(session.id)}
+                                            className={`flex items-start cursor-pointer active:scale-[0.99] ${isCompleted ? 'opacity-75' : ''}`}
+                                        >
+                                            <div className="flex-shrink-0 mr-4 mt-1">
+                                                {isCompleted ? (
+                                                    <CheckCircle className="w-7 h-7 text-green-500" />
+                                                ) : (
+                                                    <Circle className="w-7 h-7 text-slate-300" />
+                                                )}
                                             </div>
-                                            <h3 className={`text-lg font-bold mb-1 ${isCompleted ? 'text-slate-500 line-through decoration-slate-400' : 'text-slate-800'}`}>
-                                                {session.title}
-                                            </h3>
-                                            <p className={`text-sm leading-relaxed ${isCompleted ? 'text-slate-400' : 'text-slate-600'}`}>
-                                                {session.desc}
-                                            </p>
+                                            
+                                            <div className="flex-grow">
+                                                <div className="flex items-center justify-between mb-1">
+                                                    <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">{session.day}</span>
+                                                    <span className={`text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 ${typeBg} ${typeColor}`}>
+                                                        <Icon className="w-3.5 h-3.5" />
+                                                        {session.type.charAt(0).toUpperCase() + session.type.slice(1)}
+                                                    </span>
+                                                </div>
+                                                <h3 className={`text-lg font-bold mb-1 ${isCompleted ? 'text-slate-500 line-through decoration-slate-400' : 'text-slate-800'}`}>
+                                                    {session.title}
+                                                </h3>
+                                                <p className={`text-sm leading-relaxed ${isCompleted ? 'text-slate-400' : 'text-slate-600'}`}>
+                                                    {session.desc}
+                                                </p>
+                                            </div>
                                         </div>
+
+                                        {/* Notes and RPE Form - Only shows when completed */}
+                                        {isCompleted && (
+                                            <div className="mt-4 pt-4 border-t border-slate-200">
+                                                <div className="flex flex-col gap-3">
+                                                    <div className="flex items-center gap-3">
+                                                        <label className="text-sm font-semibold text-slate-600">RPE (1-10):</label>
+                                                        <select 
+                                                            value={data.rpe || ''} 
+                                                            onChange={(e) => updateSessionDetails(session.id, 'rpe', e.target.value)}
+                                                            className="bg-white border border-slate-300 text-slate-700 text-sm rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                        >
+                                                            <option value="">--</option>
+                                                            {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                                                                <option key={n} value={n}>{n} {n === 10 ? '(Max)' : n === 1 ? '(Very Light)' : ''}</option>
+                                                            ))}
+                                                        </select>
+                                                        <span className="text-xs text-slate-400 italic hidden sm:inline">Rate perceived exertion</span>
+                                                    </div>
+                                                    <textarea 
+                                                        placeholder="Notes on mood, perceived effort, weather, pacing..."
+                                                        value={data.notes || ''}
+                                                        onChange={(e) => updateSessionDetails(session.id, 'notes', e.target.value)}
+                                                        className="w-full bg-white border border-slate-300 text-slate-700 text-sm rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none h-24"
+                                                    ></textarea>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
